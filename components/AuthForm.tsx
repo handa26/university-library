@@ -10,6 +10,7 @@ import {
 } from "react-hook-form";
 import { ZodType } from "zod";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -23,6 +24,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import ImageUpload from "@/components/ImageUpload";
+import { toast } from "@/hooks/use-toast";
 
 import { FIELD_NAMES, FIELD_TYPES } from "@/constants";
 
@@ -39,6 +41,7 @@ const AuthForm = <T extends FieldValues>({
   defaultValues,
   onSubmit,
 }: Props<T>) => {
+  const router = useRouter();
   const isSignIn = type === "SIGN_IN";
 
   const form: UseFormReturn<T> = useForm({
@@ -46,7 +49,27 @@ const AuthForm = <T extends FieldValues>({
     defaultValues: defaultValues as DefaultValues<T>,
   });
 
-  const handleSubmit: SubmitHandler<T> = async (data) => {};
+  const handleSubmit: SubmitHandler<T> = async (data) => {
+    const result = await onSubmit(data);
+
+    if (result.success) {
+      toast({
+        title: "Success",
+        description: isSignIn
+          ? "You have successfully signed in."
+          : "You have successfully signed up.",
+      });
+      
+      router.push("/");
+    } else {
+      toast({
+        title: `Error ${isSignIn ? "signing in" : "signing up"}.`,
+        description: result.error ?? "An error occured",
+        variant: "destructive",
+      });
+    }
+
+  };
 
   return (
     <div className="flex flex-col gap-4">
@@ -92,7 +115,9 @@ const AuthForm = <T extends FieldValues>({
               )}
             />
           ))}
-          <Button type="submit" className="form-btn">{isSignIn ? "Sign In" : "Sign Up"}</Button>
+          <Button type="submit" className="form-btn">
+            {isSignIn ? "Sign In" : "Sign Up"}
+          </Button>
         </form>
       </Form>
 

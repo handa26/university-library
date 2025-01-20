@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { ReactNode } from "react";
+import { SessionProvider } from "next-auth/react";
+
+import { auth } from "@/auth";
 
 import { Toaster } from "@/components/ui/toaster";
 
@@ -28,15 +31,19 @@ export const metadata: Metadata = {
     "BookWise is a book lending university library management solution. It allows users to easily find and borrow books, track their loan status, and manage their account information.",
 };
 
-const RootLayout = ({ children }: { children: ReactNode }) => {
+const RootLayout = async ({ children }: { children: ReactNode }) => {
+  const session = await auth();
+
   return (
     <html lang="en">
-      <body
-        className={`${ibmPlexSans.className} ${bebasNeue.variable} antialiased`}
-      >
-        {children}
-        <Toaster />
-      </body>
+      <SessionProvider session={session}>
+        <body
+          className={`${ibmPlexSans.className} ${bebasNeue.variable} antialiased`}
+        >
+          {children}
+          <Toaster />
+        </body>
+      </SessionProvider>
     </html>
   );
 };
