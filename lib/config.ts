@@ -10,6 +10,8 @@ const config = {
     upstash: {
       redisUrl: process.env.UPSTASH_REDIS_URL!,
       redisToken: process.env.UPSTASH_REDIS_TOKEN!,
+      qtashUrl: process.env.QTASH_URL!,
+      qtashToken: process.env.QTASH_TOKEN!,
     }
   },
 };
