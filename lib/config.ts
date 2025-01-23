@@ -13,7 +13,8 @@ const config = {
       redisToken: process.env.UPSTASH_REDIS_TOKEN!,
       qtashUrl: process.env.QTASH_URL!,
       qtashToken: process.env.QTASH_TOKEN!,
-    }
+    },
+    resendToken: process.env.RESEND_TOKEN!,
   },
 };
 
