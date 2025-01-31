@@ -15,6 +15,13 @@
       "when": 1738052928099,
       "tag": "0001_thick_lady_deathstrike",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1738290034328,
+      "tag": "0002_dizzy_ulik",
+      "breakpoints": true
     }
   ]
 }
