@@ -223,6 +223,23 @@
   .select-item {
     @apply focus:bg-dark-600 focus:text-light-100 !important;
   }
+
+  /* Profile */
+  .profile_container {
+    @apply w-full pb-10 px-6 max-w-7xl mx-auto lg:flex-row flex-col flex gap-10;
+  }
+
+  .profile_card {
+    @apply w-full relative flex flex-col p-[20px] mt-5 justify-center bg-[#1f2433] rounded-md relative z-0 h-fit md:w-[566px] max-lg:w-full;
+  }
+
+  .profile_card-pin {
+    @apply w-[59px] h-[88px] absolute top-[-15px] left-[45%] bg-[#464F6F] flex flex-col justify-end items-center pb-[15px] rounded-br-full rounded-bl-full;
+  }
+
+  .profile_card-pin div {
+    @apply w-[40px] h-[10px] bg-[#1E2230] rounded-full;
+  }
 }
 
 @layer utilities {
