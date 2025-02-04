@@ -21,8 +21,9 @@
 
 - **Profile Page**:
   - View borrowed books.
-  - View and update personal information. (**In Progress**)
-  - Track borrowed books and due dates. (**In Progress**)
+  - View personal information.
+  - Track borrowed books and due dates.
+  - Update personal information. (**Soon**)
 - **Home Page**:
   - List all books
   - Books with detailed information.
@@ -130,6 +131,12 @@
 <div style="margin-top: 12px; margin-bottom: 12px">
   <a href="https://university-library-nu.vercel.app/">
     <img src="./public/preview/BookWise-homepage.png" alt="homepage" style="width: 100%; border: 2px solid blue; border-radius: 10px;">
+  </a>
+</div>
+
+<div style="margin-top: 12px; margin-bottom: 12px">
+  <a href="https://university-library-nu.vercel.app/">
+    <img src="./public/preview/BookWise-profile.png" alt="homepage" style="width: 100%; border: 2px solid blue; border-radius: 10px;">
   </a>
 </div>
 
