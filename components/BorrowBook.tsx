@@ -29,6 +29,8 @@ const BorrowBook = ({
         description: message,
         variant: "destructive",
       });
+
+      return;
     }
 
     setBorrowing(true);

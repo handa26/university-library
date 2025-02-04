@@ -59,10 +59,14 @@ const Page = async () => {
               />
             </div>
             <div>
-              <p className="text-[14px] flex items-center gap-1 text-white">
-                <BadgeCheck className="inline h-[16px] w-[16px]" /> Verified
-                Student
-              </p>
+              {currentUser?.status === "APPROVED" ? (
+                <p className="text-[14px] flex items-center gap-1 text-white">
+                  <BadgeCheck className="inline h-[16px] w-[16px]" /> Verified
+                  Student
+                </p>
+              ) : (
+                <p className="text-[14px] text-red-700">Account not verified yet.</p>
+              )}
               <p className="font-semibold text-[24px] text-white mt-[10px] mb-[5px]">
                 {currentUser?.fullName}
               </p>
@@ -88,7 +92,8 @@ const Page = async () => {
             books={borrowedRecords.map((record) => ({
               // Spread book details
               ...record.books,
-              isLoanedBook: record.borrow_records?.status === "BORROWED" ? true : false,
+              isLoanedBook:
+                record.borrow_records?.status === "BORROWED" ? true : false,
               dueDate: record.borrow_records?.dueDate,
               // Add borrow-specific information
               // Include other borrow record fields if needed
