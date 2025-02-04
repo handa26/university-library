@@ -10,6 +10,8 @@ const UniversityCard = ({ universityCard }: { universityCard: string }) => {
         path={universityCard}
         urlEndpoint={config.env.imagekit.urlEndpoint}
         alt="university card"
+        width={0}
+        height={0}
         className="rounded-sm object-fill w-full h-[287px]"
         loading="lazy"
         lqip={{ active: true }}

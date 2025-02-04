@@ -1,5 +1,4 @@
-// "use client";
-import { eq } from "drizzle-orm";
+import { eq, desc } from "drizzle-orm";
 import { BadgeCheck } from "lucide-react";
 import Image from "next/image";
 
@@ -11,8 +10,7 @@ import { signOut } from "@/auth";
 import { sampleBooks } from "@/constants";
 import { auth } from "@/auth";
 import { db } from "@/database/drizzle";
-import { users } from "@/database/schema";
-import config from "@/lib/config";
+import { users, borrowRecords, books } from "@/database/schema";
 
 const Page = async () => {
   const session = await auth();
@@ -22,6 +20,13 @@ const Page = async () => {
     .from(users)
     .where(eq(users.id, session?.user?.id as string))
     .limit(1);
+
+  const borrowedRecords = await db
+    .select()
+    .from(borrowRecords)
+    .rightJoin(books, eq(borrowRecords.bookId, books.id))
+    .where(eq(borrowRecords.userId, session?.user?.id as string))
+    .orderBy(desc(borrowRecords.createdAt));
 
   return (
     <>
@@ -78,7 +83,17 @@ const Page = async () => {
         </div>
 
         <div className="flex-1 flex flex-col gap-5 lg:mt-5">
-          <BookList title="Borrowed Books" books={sampleBooks} />
+          <BookList
+            title="Borrowed Books"
+            books={borrowedRecords.map((record) => ({
+              // Spread book details
+              ...record.books,
+              isLoanedBook: record.borrow_records?.status === "BORROWED" ? true : false,
+              dueDate: record.borrow_records?.dueDate,
+              // Add borrow-specific information
+              // Include other borrow record fields if needed
+            }))}
+          />
         </div>
       </section>
     </>
