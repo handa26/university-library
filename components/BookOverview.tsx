@@ -1,11 +1,13 @@
 import Image from "next/image";
-import { eq, is } from "drizzle-orm";
+import { eq, is, and } from "drizzle-orm";
+import dayjs from "dayjs";
 
 import BookCover from "@/components/BookCover";
 import BorrowBook from "@/components/BorrowBook";
+import { Button } from "@/components/ui/button";
 
 import { db } from "@/database/drizzle";
-import { users } from "@/database/schema";
+import { users, borrowRecords } from "@/database/schema";
 
 interface Props extends Book {
   userId: string;
@@ -28,6 +30,12 @@ const BookOverview = async ({
     .select()
     .from(users)
     .where(eq(users.id, userId))
+    .limit(1);
+
+  const borrowedBook = await db
+    .select()
+    .from(borrowRecords)
+    .where(and(eq(borrowRecords.bookId, id), eq(borrowRecords.userId, userId)))
     .limit(1);
 
   const borrowingEligibility = {
@@ -70,12 +78,39 @@ const BookOverview = async ({
 
         <p className="book-description">{description}</p>
 
-        {user && (
+        {user && borrowedBook?.length === 0 ? (
           <BorrowBook
             bookId={id}
             userId={userId}
             borrowingEligibility={borrowingEligibility}
           />
+        ) : (
+          <>
+            <div className="book-loaned">
+              <Image
+                src="/icons/calendar.svg"
+                alt="calendar"
+                width={18}
+                height={18}
+                className="object-contain"
+              />
+              <p className="text-light-100">
+                {dayjs(borrowedBook?.[0].dueDate).diff(dayjs(), "day")} days
+                left to return
+              </p>
+            </div>
+            <div className="flex gap-2">
+              <Button
+                className="min-h-14 w-fit bg-primary text-dark-100 hover:bg-primary/90 max-md:w-full"
+                disabled
+              >
+                <p className="font-bebas-neue text-xl text-dark-100">
+                  Borrowed
+                </p>
+              </Button>
+              <Button className="bg-dark-600 min-h-14 w-fit font-bebas-neue text-base text-primary">Download receipt</Button>
+            </div>
+          </>
         )}
       </div>
 
