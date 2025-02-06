@@ -1,52 +1,46 @@
 import Link from "next/link";
 import Image from "next/image";
+import { LogOut, Search } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
-import { signOut } from "@/auth";
+import { signOut, auth } from "@/auth";
+import { getInitials } from "@/lib/utils";
 
-const Header = () => {
-  // const pathname = usePathname();
+const Header = async () => {
+  const session = await auth();
 
   return (
-    <header className="my-10 flex justify-between gap-5">
+    <header className="my-10 flex items-center justify-between gap-5">
       <Link href="/">
         <Image src="/icons/logo.svg" alt="logo" width={40} height={40} />
       </Link>
 
-      <ul className="flex flex-row items-center gap-8">
-        {/* <li>
-          <Link
-            href="/library"
-            className={cn(
-              "text-base cursor-pointer capitalize",
-              pathname === "/library" ? "text-light-200" : "text-light-100"
-            )}
-          >
-            Library
-          </Link>
-        </li> */}
+      <div className="flex items-center gap-5">
+        <Link href="/search">
+          <span className="max-sm:hidden text-[20px] text-white font-ibm-plex-sans">Search</span>
+          <Search className="size-6 text-white sm:hidden" />
+        </Link>
 
-        <li>
-          <form
-            action={async () => {
-              "use server";
+        <Link href="/my-profile">
+          <Avatar>
+            <AvatarFallback className="bg-amber-100">
+              {getInitials(session?.user?.name || "IN")}
+            </AvatarFallback>
+          </Avatar>
+        </Link>
 
-              await signOut();
-            }}
-            className="mb-10"
-          >
-            <Button>Logout</Button>
-          </form>
-          {/* <Link href="/my-profile">
-            <Avatar>
-              <AvatarFallback className="bg-amber-100">
-                {getInitials(session?.user?.name || "IN")}
-              </AvatarFallback>
-            </Avatar>
-          </Link> */}
-        </li>
-      </ul>
+        <button
+          onClick={async () => {
+            "use server";
+
+            await signOut();
+          }}
+        >
+          <LogOut className="size-6 text-[#FF5969]" />
+        </button>
+      </div>
     </header>
   );
 };
