@@ -140,7 +140,11 @@
   }
 
   .search-input {
-    @apply w-full border-none font-bold placeholder:font-normal text-white placeholder:text-light-100 focus-visible:ring-0 focus-visible:shadow-none !important;
+    @apply w-full bg-transparent border-none font-bold placeholder:font-normal text-white placeholder:text-light-100 focus-visible:ring-0 focus-visible:shadow-none !important;
+  }
+
+  .search-btn {
+    @apply size-[20px] mr-2 rounded-full flex justify-center items-center !important;
   }
 
   /* Book Receipt */
