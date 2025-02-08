@@ -27,7 +27,9 @@
 - **Home Page**:
   - List all books
   - Books with detailed information.
-  - Search for books by title, author, or genre. (**In Progress**)
+  - Search for books by title
+  - Pagination for books (**Soon**)
+  - Search for books by author, genre (**Soon**)
 
 ---
 
@@ -131,6 +133,12 @@
 <div style="margin-top: 12px; margin-bottom: 12px">
   <a href="https://university-library-nu.vercel.app/">
     <img src="./public/preview/BookWise-homepage.png" alt="homepage" style="width: 100%; border: 2px solid blue; border-radius: 10px;">
+  </a>
+</div>
+
+<div style="margin-top: 12px; margin-bottom: 12px">
+  <a href="https://university-library-nu.vercel.app/">
+    <img src="./public/preview/BookWise-search.png" alt="search" style="width: 100%; border: 2px solid blue; border-radius: 10px;">
   </a>
 </div>
 
