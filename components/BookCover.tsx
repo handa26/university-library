@@ -7,7 +7,7 @@ import BookCoverSvg from "@/components/BookCoverSvg";
 import config from "@/lib/config";
 
 const variantStyles: Record<BookCoverVariant, string> = {
-  extraSmall: "book-cover_extra-small",
+  extraSmall: "book-cover_extra_small",
   small: "book-cover_small",
   medium: "book-cover_medium",
   regular: "book-cover_regular",
