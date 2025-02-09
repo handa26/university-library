@@ -17,27 +17,6 @@ import { db } from "@/database/drizzle";
 import { books } from "@/database/schema";
 import { formatDate } from "@/lib/utils";
 
-const dummyBooks = [
-  {
-    title: "Artificial Intelligence: A Modern Approach",
-    author: "Stuart Russell and Peter Norvig",
-    genre: "Artificial Intelligence",
-    coverUrl:
-      "https://m.media-amazon.com/images/I/61nHC3YWZlL._AC_UF1000,1000_QL80_.jpg",
-    coverColor: "#c7cdd9",
-    dateCreated: "2025-01-30",
-  },
-  {
-    title: "Computer Networking: A Top-Down Approach",
-    author: "James F. Kurose and Keith W. Ross",
-    genre: "Networking",
-    coverUrl:
-      "https://m.media-amazon.com/images/I/91hg1HHyiWL._AC_UF1000,1000_QL80_.jpg",
-    coverColor: "#f7a13e",
-    dateCreated: "2025-01-30",
-  },
-];
-
 const BookList = async () => {
   const allBooks = (await db
     .select()
