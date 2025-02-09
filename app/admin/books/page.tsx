@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
+import BookList from "@/components/admin/BookList";
 
 const Page = () => {
   return (
@@ -16,7 +17,7 @@ const Page = () => {
       </div>
 
       <div className="mt-7 w-full overflow-hidden">
-        <p>Table</p>
+        <BookList />
       </div>
     </section>
   );
