@@ -1,5 +1,6 @@
 import { SquarePen, Trash2 } from "lucide-react";
 import { desc } from "drizzle-orm";
+import Link from "next/link";
 
 import {
   Table,
@@ -37,13 +38,15 @@ const BookList = async () => {
       <TableBody>
         {allBooks.map((book) => (
           <TableRow key={book.title}>
-            <TableCell className="flex items-center gap-2">
-              <BookCover
-                coverColor={book.coverColor}
-                coverImage={book.coverUrl}
-                variant="extraSmall"
-              />
-              {book.title}
+            <TableCell>
+              <Link href={`/admin/books/${book.id}`} className="flex items-center gap-2">
+                <BookCover
+                  coverColor={book.coverColor}
+                  coverImage={book.coverUrl}
+                  variant="extraSmall"
+                />
+                {book.title}
+              </Link>
             </TableCell>
             <TableCell>{book.author}</TableCell>
             <TableCell>{book.genre}</TableCell>
