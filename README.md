@@ -13,7 +13,7 @@
 - **Account Requests**: Approve or reject new user registrations. (**In Progress**)
 - **Books Management**:
   - Create a book
-  - List all available books. (**In Progress**)
+  - List all available books.
   - Edit or remove books from the library. (**In Progress**)
 - **Dashboard**: Quick access to all sections. (**In Progress**)
 
