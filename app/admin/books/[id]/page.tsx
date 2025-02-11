@@ -23,9 +23,11 @@ const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
 
   return (
     <>
-      <Button className="back-btn flex items-center gap-2">
-        <MoveLeft />
-        <Link href="/admin/books">Go Back</Link>
+      <Button className="back-btn flex items-center gap-2" asChild>
+        <Link href="/admin/books">
+          <MoveLeft />
+          Go Back
+        </Link>
       </Button>
 
       <section className="w-full">
