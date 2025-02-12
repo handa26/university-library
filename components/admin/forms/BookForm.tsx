@@ -316,7 +316,7 @@ const BookForm = ({ type = "CREATE", book }: Props) => {
         />
 
         <Button type="submit" className="book-form_btn text-white">
-          Add Book to Library
+          {type === "UPDATE" ? "Update Book" : "Add Book"}
         </Button>
       </form>
     </Form>
