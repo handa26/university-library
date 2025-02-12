@@ -20,47 +20,74 @@ import FileUpload from "@/components/FileUpload";
 import ColorPicker from "@/components/admin/ColorPicker";
 
 import { bookSchema } from "@/lib/validations";
-import { createBook } from "@/lib/admin/actions/book";
+import { createBook, updateBook } from "@/lib/admin/actions/book";
 import { toast } from "@/hooks/use-toast";
 
 interface Props extends Partial<Book> {
   type?: "CREATE" | "UPDATE";
+  book?: Book;
 }
 
-const BookForm = ({ type, ...book }: Props) => {
+const initialDefaultValues = {
+  title: "",
+  description: "",
+  author: "",
+  genre: "",
+  rating: 1,
+  totalCopies: 1,
+  coverUrl: "",
+  coverColor: "",
+  videoUrl: "",
+  summary: "",
+};
+
+const BookForm = ({ type = "CREATE", book }: Props) => {
   const router = useRouter();
 
   const form = useForm<z.infer<typeof bookSchema>>({
     resolver: zodResolver(bookSchema),
-    defaultValues: {
-      title: "",
-      description: "",
-      author: "",
-      genre: "",
-      rating: 1,
-      totalCopies: 1,
-      coverUrl: "",
-      coverColor: "",
-      videoUrl: "",
-      summary: "",
-    },
+    defaultValues:
+      type === "UPDATE" && book ? { ...book } : initialDefaultValues,
   });
 
   const onSubmit = async (values: z.infer<typeof bookSchema>) => {
-    const result = await createBook(values);
+    let result;
+    
+    try {
+      if (type === "UPDATE") {
+        result = await updateBook({
+          bookId: book?.id as string,
+          params: values,
+        });
+      } else {
+        result = await createBook(values);
+      }
 
-    if (result.success) {
-      toast({
-        title: "Success",
-        description: "Book added successfully",
-      });
+      if (result.success) {
+        toast(
+          type === "UPDATE"
+            ? {
+                title: "Success",
+                description: "Book updated successfully",
+              }
+            : {
+                title: "Success",
+                description: "Book added successfully",
+              }
+        );
+      }
 
-      router.push(`/admin/books/${result.data.id}`);
-    } else {
+      // Redirect
+      if (type === "UPDATE") {
+        router.push(`/admin/books/${book?.id}`);
+      } else {
+        router.push("/admin/books");
+      }
+    } catch (error) {
       toast({
-        title: "Error adding book",
-        description: result.message,
-        variant: "destructive"
+        title: "Error",
+        description: "An error occurred while adding the book",
+        variant: "destructive",
       });
     }
   };
