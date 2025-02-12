@@ -39,7 +39,10 @@ const BookList = async () => {
         {allBooks.map((book) => (
           <TableRow key={book.title}>
             <TableCell>
-              <Link href={`/admin/books/${book.id}`} className="flex items-center gap-2">
+              <Link
+                href={`/admin/books/${book.id}`}
+                className="flex items-center gap-2"
+              >
                 <BookCover
                   coverColor={book.coverColor}
                   coverImage={book.coverUrl}
@@ -52,7 +55,9 @@ const BookList = async () => {
             <TableCell>{book.genre}</TableCell>
             <TableCell>{formatDate(book.createdAt!)}</TableCell>
             <TableCell className="flex gap-4 items-center align-middle">
-              <SquarePen className="text-[#0089F1] size-6" />
+              <Link href={`/admin/books/${book.id}/edit`}>
+                <SquarePen className="text-[#0089F1] size-6" />
+              </Link>
               <Trash2 className="text-[#EF3A4B] size-6" />
             </TableCell>
           </TableRow>
