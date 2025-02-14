@@ -1,4 +1,4 @@
-import { SquarePen, Trash2 } from "lucide-react";
+import { SquarePen } from "lucide-react";
 import { desc } from "drizzle-orm";
 import Link from "next/link";
 
@@ -13,6 +13,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import BookCover from "@/components/BookCover";
+import DeleteDialog from "@/components/admin/DeleteDialog";
 
 import { db } from "@/database/drizzle";
 import { books } from "@/database/schema";
@@ -58,7 +59,7 @@ const BookList = async () => {
               <Link href={`/admin/books/${book.id}/edit`}>
                 <SquarePen className="text-[#0089F1] size-6" />
               </Link>
-              <Trash2 className="text-[#EF3A4B] size-6" />
+              <DeleteDialog bookId={book.id} />
             </TableCell>
           </TableRow>
         ))}
