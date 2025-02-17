@@ -44,3 +44,14 @@ interface BorrowBookParams {
   bookId: string;
   userId: string;
 }
+
+interface User {
+  id: string;
+  fullName: string;
+  email: string;
+  role: string;
+  universityId: number;
+  universityCard: string;
+  createdAt: Date | null;
+  booksBorrowed?: number;
+}
