@@ -12,8 +12,6 @@ import {
 import { formatDate } from "@/lib/utils";
 import { cn } from "@/lib/utils";
 
-// {`${user.role === "ADMIN" ? "text-[#027A48]" : "text-[#C11574] bg-[#FDF2FA] w-[50px] h-[24px] rounded-full flex justify-center items-center"}`}
-
 const UsersList = ({ users }: { users: User[] }) => {
   return (
     <Table>
@@ -30,7 +28,7 @@ const UsersList = ({ users }: { users: User[] }) => {
       </TableHeader>
       <TableBody>
         {users.map((user) => (
-          <TableRow key={user.id}>
+          <TableRow key={user.id} className="font-ibm-plex-sans text-[14px]">
             <TableCell>{user.fullName}</TableCell>
             <TableCell>{formatDate(user.createdAt!)}</TableCell>
             <TableCell>
@@ -54,7 +52,7 @@ const UsersList = ({ users }: { users: User[] }) => {
                 target="_blank"
               >
                 View ID Card
-                <SquareArrowOutUpRight className="inline" />
+                <SquareArrowOutUpRight className="inline h-[14px] w-[14px]" />
               </a>
             </TableCell>
             <TableCell className="">
