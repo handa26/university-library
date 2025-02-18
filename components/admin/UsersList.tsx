@@ -8,6 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import DeleteUserDialog from "@/components/admin/DeleteUserDialog";
 
 import { formatDate } from "@/lib/utils";
 import { cn } from "@/lib/utils";
@@ -56,7 +57,7 @@ const UsersList = ({ users }: { users: User[] }) => {
               </a>
             </TableCell>
             <TableCell className="">
-              <Trash2 className="text-[#EF3A4B] size-6 inline" />
+              <DeleteUserDialog userId={user.id} />
             </TableCell>
           </TableRow>
         ))}
