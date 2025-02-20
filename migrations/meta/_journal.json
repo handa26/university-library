@@ -22,6 +22,13 @@
       "when": 1738290034328,
       "tag": "0002_dizzy_ulik",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1740035225190,
+      "tag": "0003_flowery_hiroim",
+      "breakpoints": true
     }
   ]
 }
