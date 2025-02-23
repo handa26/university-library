@@ -55,3 +55,15 @@ interface User {
   createdAt: Date | null;
   booksBorrowed?: number;
 }
+
+interface BorrowBookListProps {
+  id: string;
+  bookTitle: string;
+  userRequested: string;
+  borrowDate?: string | Date;
+  returnDate: string | null;
+  dueDate: string;
+  status: string;
+  coverUrl: string;
+  coverColor?: string;
+}
