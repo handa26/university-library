@@ -1,4 +1,4 @@
-import { eq, desc } from "drizzle-orm";
+import { eq, desc, and } from "drizzle-orm";
 import { BadgeCheck } from "lucide-react";
 import Image from "next/image";
 
@@ -25,7 +25,7 @@ const Page = async () => {
     .select()
     .from(borrowRecords)
     .rightJoin(books, eq(borrowRecords.bookId, books.id))
-    .where(eq(borrowRecords.userId, session?.user?.id as string))
+    .where(and(eq(borrowRecords.userId, session?.user?.id as string), eq(borrowRecords.status, "BORROWED")))
     .orderBy(desc(borrowRecords.createdAt));
 
   return (
