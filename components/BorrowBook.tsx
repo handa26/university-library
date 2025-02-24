@@ -20,7 +20,7 @@ const BorrowBook = ({
   borrowingEligibility: { isEligible, message },
 }: Props) => {
   const router = useRouter();
-  const [borrowing, setBorrowing] = useState(false);
+  const [requesting, setRequesting] = useState(false);
 
   const handleBorrow = async () => {
     if (!isEligible) {
@@ -33,14 +33,14 @@ const BorrowBook = ({
       return;
     }
 
-    setBorrowing(true);
+    setRequesting(true);
     try {
       const result = await borrowBook({ userId, bookId });
 
       if (result.success) {
         toast({
           title: "Success",
-          description: "Book borrowed successfully",
+          description: "Borrow request submitted. Awaiting admin approval.",
         });
 
         router.push("/my-profile");
@@ -53,12 +53,12 @@ const BorrowBook = ({
       }
     } catch (error) {
       toast({
-        title: "Error borrowing book",
-        description: "An error occurred while borrowing the book.",
+        title: "Error requesting book",
+        description: "An error occurred while requesting the book.",
         variant: "destructive",
       });
     } finally {
-      setBorrowing(false);
+      setRequesting(false);
     }
   };
 
@@ -66,11 +66,11 @@ const BorrowBook = ({
     <Button
       className="book-overview_btn"
       onClick={handleBorrow}
-      disabled={borrowing}
+      disabled={requesting || !isEligible}
     >
       <Image src="/icons/book.svg" alt="book" width={20} height={20} />
       <p className="font-bebas-neue text-xl text-dark-100">
-        {borrowing ? "Borrowing..." : "Borrow Book"}
+        {requesting ? "Borrowing..." : "Borrow Book"}
       </p>
     </Button>
   );
