@@ -12,8 +12,8 @@
   - Create a book
   - List all available books.
   - Edit or remove books from the library.
-- **Users Management**: View and manage all registered users. (**In Progress**)
-- **Borrow Requests**: Handle book borrowing requests efficiently. (**In Progress**)
+- **Users Management**: View and manage all registered users.
+- **Borrow Requests**: Handle book borrowing requests efficiently.
 - **Account Requests**: Approve or reject new user registrations. (**In Progress**)
 - **Dashboard**: Quick access to all sections. (**In Progress**)
 
@@ -30,6 +30,7 @@
   - Search for books by title
   - Pagination for books (**Soon**)
   - Search for books by author, genre (**Soon**)
+  - Notification (**Soon**)
 
 ---
 
