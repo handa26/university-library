@@ -1,5 +1,7 @@
+"use client";
 import { format } from "date-fns";
 import { ReceiptText } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 import {
   Table,
@@ -19,6 +21,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { cn } from "@/lib/utils";
+import {
+  approveBorrowRequest,
+  rejectBorrowRequest,
+  returnBook,
+} from "@/lib/actions/book";
+import { toast } from "@/hooks/use-toast";
 
 const borrowStatusMap: Record<string, string> = {
   BORROWED: "Borrowed",
@@ -41,6 +49,95 @@ const BorrowBookList = ({
 }: {
   borrowRequests: BorrowBookListProps[];
 }) => {
+  const router = useRouter();
+
+  const handleApprove = async (borrowId: string) => {
+    if (!borrowId) return;
+
+    try {
+      const response = await approveBorrowRequest(borrowId);
+
+      if (response.success) {
+        toast({
+          title: "Success",
+          description: "Borrow request approved successfully",
+        });
+        router.replace("/admin/borrow-records");
+      } else {
+        toast({
+          title: "Error",
+          description: response.message,
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: "Error",
+        description: "An unexpected error occurred. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleReject = async (borrowId: string) => {
+    if (!borrowId) return;
+
+    try {
+      const response = await rejectBorrowRequest(borrowId);
+
+      if (response.success) {
+        toast({
+          title: "Success",
+          description: "Borrow request rejected successfully",
+        });
+        router.replace("/admin/borrow-records");
+      } else {
+        toast({
+          title: "Error",
+          description: response.message,
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: "Error",
+        description: "An unexpected error occurred. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleReturn = async (borrowId: string) => {
+    if (!borrowId) return;
+
+    try {
+      const response = await returnBook(borrowId);
+
+      if (response.success) {
+        toast({
+          title: "Success",
+          description: "Book returned successfully",
+        });
+        router.replace("/admin/borrow-records");
+      } else {
+        toast({
+          title: "Error",
+          description: response.message,
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: "Error",
+        description: "An unexpected error occurred. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <Table>
       <TableHeader>
@@ -83,19 +180,34 @@ const BorrowBookList = ({
                 </DropdownMenuTrigger>
                 {borrowRequest.status === "BORROWED" ? (
                   <DropdownMenuContent>
-                    <DropdownMenuItem>Returned</DropdownMenuItem>
-                    <DropdownMenuItem>Late Return</DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => handleReturn(borrowRequest.id)}
+                    >
+                      Returned
+                    </DropdownMenuItem>
                   </DropdownMenuContent>
                 ) : borrowRequest.status === "PENDING" ? (
                   <DropdownMenuContent>
-                    <DropdownMenuItem>Approve</DropdownMenuItem>
-                    <DropdownMenuItem>Reject</DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => handleApprove(borrowRequest.id)}
+                    >
+                      Approve
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => handleReject(borrowRequest.id)}
+                    >
+                      Reject
+                    </DropdownMenuItem>
                   </DropdownMenuContent>
                 ) : null}
               </DropdownMenu>
             </TableCell>
             <TableCell>
-              <p>{format(new Date(borrowRequest.borrowDate!), "MMM d yyyy")}</p>
+              <p>
+                {borrowRequest.borrowDate
+                  ? format(new Date(borrowRequest.borrowDate), "MMM d yyyy")
+                  : "-"}
+              </p>
             </TableCell>
             <TableCell>
               <p>
@@ -105,7 +217,11 @@ const BorrowBookList = ({
               </p>
             </TableCell>
             <TableCell>
-              <p>{format(new Date(borrowRequest.dueDate!), "MMM d yyyy")}</p>
+              <p>
+                {borrowRequest.dueDate
+                  ? format(new Date(borrowRequest.dueDate), "MMM d yyyy")
+                  : "-"}
+              </p>
             </TableCell>
             <TableCell>
               <Button className="bg-[#F8F8FF] text-[#25388C] font-semibold hover:bg-[#dbdbdb]">
