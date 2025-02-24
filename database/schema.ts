@@ -61,11 +61,9 @@ export const borrowRecords = pgTable("borrow_records", {
   bookId: uuid("book_id")
     .references(() => books.id)
     .notNull(),
-  borrowDate: timestamp("borrow_date", { withTimezone: true })
-    .defaultNow()
-    .notNull(),
-  dueDate: date("due_date").notNull(),
+  borrowDate: timestamp("borrow_date", { withTimezone: true }),
+  dueDate: date("due_date"),
   returnDate: date("return_date"),
-  status: BORROW_STATUS_ENUM("status").default("BORROWED").notNull(),
+  status: BORROW_STATUS_ENUM("status").default("PENDING").notNull(),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
 });
