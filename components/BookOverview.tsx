@@ -1,10 +1,11 @@
 import Image from "next/image";
-import { eq, is, and } from "drizzle-orm";
+import { eq, is, and, desc } from "drizzle-orm";
 import dayjs from "dayjs";
 
 import BookCover from "@/components/BookCover";
 import BorrowBook from "@/components/BorrowBook";
 import { Button } from "@/components/ui/button";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 import { db } from "@/database/drizzle";
 import { users, borrowRecords } from "@/database/schema";
@@ -36,6 +37,7 @@ const BookOverview = async ({
     .select()
     .from(borrowRecords)
     .where(and(eq(borrowRecords.bookId, id), eq(borrowRecords.userId, userId)))
+    .orderBy(desc(borrowRecords.createdAt))
     .limit(1);
 
   const borrowingEligibility = {
@@ -78,13 +80,22 @@ const BookOverview = async ({
 
         <p className="book-description">{description}</p>
 
-        {user && borrowedBook?.length === 0 ? (
+        {user &&
+        (!borrowedBook ||
+          borrowedBook.length === 0 ||
+          borrowedBook[0].status === "RETURNED") ? (
           <BorrowBook
             bookId={id}
             userId={userId}
             borrowingEligibility={borrowingEligibility}
           />
-        ) : (
+        ) : borrowedBook && borrowedBook[0].status === "PENDING" ? (
+          <Alert className="bg-primary/10 border-primary/20 text-primary">
+            <AlertDescription>
+              Your borrow request is pending approval.
+            </AlertDescription>
+          </Alert>
+        ) : borrowedBook && borrowedBook[0].status === "BORROWED" ? (
           <>
             <div className="book-loaned">
               <Image
@@ -95,8 +106,12 @@ const BookOverview = async ({
                 className="object-contain"
               />
               <p className="text-light-100">
-                {dayjs(borrowedBook?.[0].dueDate).diff(dayjs(), "day")} days
-                left to return
+                {borrowedBook[0].dueDate
+                  ? `${dayjs(borrowedBook[0].dueDate).diff(
+                      dayjs(),
+                      "day"
+                    )} days left to return`
+                  : "Due date not set"}
               </p>
             </div>
             <div className="flex gap-2">
@@ -108,9 +123,17 @@ const BookOverview = async ({
                   Borrowed
                 </p>
               </Button>
-              <Button className="bg-dark-600 min-h-14 w-fit font-bebas-neue text-base text-primary">Download receipt</Button>
+              <Button className="bg-dark-600 min-h-14 w-fit font-bebas-neue text-base text-primary">
+                Download receipt
+              </Button>
             </div>
           </>
+        ) : (
+          <Alert className="bg-primary/10 border-primary/20 text-primary">
+            <AlertDescription>
+              You cannot borrow this book at this time.
+            </AlertDescription>
+          </Alert>
         )}
       </div>
 
