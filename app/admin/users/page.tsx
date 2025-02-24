@@ -15,7 +15,7 @@ const Page = async () => {
     borrowedCount: count(borrowRecords.id),
   })
   .from(users)
-  .leftJoin(borrowRecords, eq(users.id, borrowRecords.userId))
+  .leftJoin(borrowRecords, and(eq(users.id, borrowRecords.userId), eq(borrowRecords.status, "BORROWED")))
   .groupBy(users.id)
   .where(ne(users.id, session?.user?.id as string));
 
