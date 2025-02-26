@@ -167,5 +167,29 @@
   </a>
 </div>
 
+<div style="margin-top: 12px; margin-bottom: 12px">
+  <a href="https://university-library-nu.vercel.app/">
+    <img src="./public/preview/BookWise-userlist.png" alt="admin-userlist" style="width: 100%; border: 2px solid blue; border-radius: 10px;">
+  </a>
+</div>
+
+<div style="margin-top: 12px; margin-bottom: 12px">
+  <a href="https://university-library-nu.vercel.app/">
+    <img src="./public/preview/BookWise-booklist.png" alt="admin-booklist" style="width: 100%; border: 2px solid blue; border-radius: 10px;">
+  </a>
+</div>
+
+<div style="margin-top: 12px; margin-bottom: 12px">
+  <a href="https://university-library-nu.vercel.app/">
+    <img src="./public/preview/BookWise-borrow-records.png" alt="admin-borrow-records" style="width: 100%; border: 2px solid blue; border-radius: 10px;">
+  </a>
+</div>
+
+<div style="margin-top: 12px; margin-bottom: 12px">
+  <a href="https://university-library-nu.vercel.app/">
+    <img src="./public/preview/BookWise-account-req.png" alt="admin-account-req" style="width: 100%; border: 2px solid blue; border-radius: 10px;">
+  </a>
+</div>
+
 ## Live Demo 🌐
 [BookWise Demo](https://university-library-nu.vercel.app/)
