@@ -1,3 +1,4 @@
+"use client";
 import {
   SquareArrowOutUpRight,
   CircleCheck,
@@ -23,6 +24,7 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import ActionDialog from "@/components/admin/ActionDialog";
 
 import { formatDate } from "@/lib/utils";
 import { cn } from "@/lib/utils";
@@ -50,6 +52,14 @@ const requestStatusColorMap: Record<string, string> = {
 };
 
 const AccountRequestsList = ({ requests }: { requests: AccountRequest[] }) => {
+  const handleApprove = (requestId: string) => {
+    console.log(`Approving request ${requestId}`);
+  };
+
+  const handleReject = (requestId: string) => {
+    console.log(`Rejecting request ${requestId}`);
+  };
+
   return (
     <Table className="font-ibm-plex-sans text-[14px]">
       <TableHeader>
@@ -100,51 +110,28 @@ const AccountRequestsList = ({ requests }: { requests: AccountRequest[] }) => {
               </a>
             </TableCell>
             <TableCell className="flex gap-2 items-center align-middle h-auto">
-              <Dialog>
-                <DialogTrigger>
-                  <CircleCheck className="h-[20px] w-[20px] text-[#027A48]" />
-                </DialogTrigger>
-                <DialogContent className="font-ibm-plex-sans">
-                  <DialogHeader>
-                    <CircleCheck className="h-[60px] w-[60px] p-2 rounded-full text-slate-100 mb-[20px] bg-[#4C7B62] text-center mx-auto" />
-                    <DialogTitle className="text-center">
-                      Approve Account Request
-                    </DialogTitle>
-                    <DialogDescription className="text-center">
-                      Approve the student’s account request and grant access. A
-                      notification will be sent upon approval.
-                    </DialogDescription>
-                  </DialogHeader>
-                  <DialogClose asChild>
-                    <Button className="bg-[#4C7B62] text-slate-200 font-bold hover:bg-[#4C7B62]/70">
-                      Approve & Notify Student
-                    </Button>
-                  </DialogClose>
-                </DialogContent>
-              </Dialog>
-
-              <Dialog>
-                <DialogTrigger>
-                  <CircleX className="h-[20px] w-[20px] text-[#EF3A4B]" />
-                </DialogTrigger>
-                <DialogContent className="font-ibm-plex-sans">
-                  <DialogHeader>
-                    <CircleAlert className="h-[60px] w-[60px] p-2 rounded-full text-slate-100 mb-[20px] bg-[#F46F70] text-center mx-auto" />
-                    <DialogTitle className="text-center">
-                      Deny Account Request
-                    </DialogTitle>
-                    <DialogDescription className="text-center">
-                      Denying this request will notify the student they’re not
-                      eligible due to unsuccessful ID card verification.
-                    </DialogDescription>
-                  </DialogHeader>
-                  <DialogClose asChild>
-                    <Button className="bg-[#F46F70] text-slate-200 font-bold hover:bg-[#F46F70]/70">
-                      Deny & Notify Student
-                    </Button>
-                  </DialogClose>
-                </DialogContent>
-              </Dialog>
+            <ActionDialog
+                triggerIcon={<CircleCheck className="h-[20px] w-[20px] text-[#027A48]" />}
+                dialogIcon={
+                  <CircleCheck className="h-[60px] w-[60px] p-2 rounded-full text-slate-100 mb-[20px] bg-[#4C7B62] text-center mx-auto" />
+                }
+                title="Approve Account Request"
+                description="Approve the student’s account request and grant access. A notification will be sent upon approval."
+                buttonText="Approve & Notify Student"
+                buttonClassName="bg-[#4C7B62] text-slate-200 font-bold hover:bg-[#4C7B62]/70"
+                onAction={() => handleApprove(request.id)}
+              />
+              <ActionDialog
+                triggerIcon={<CircleX className="h-[20px] w-[20px] text-[#EF3A4B]" />}
+                dialogIcon={
+                  <CircleAlert className="h-[60px] w-[60px] p-2 rounded-full text-slate-100 mb-[20px] bg-[#F46F70] text-center mx-auto" />
+                }
+                title="Deny Account Request"
+                description="Denying this request will notify the student they’re not eligible due to unsuccessful ID card verification."
+                buttonText="Deny & Notify Student"
+                buttonClassName="bg-[#F46F70] text-slate-200 font-bold hover:bg-[#F46F70]/70"
+                onAction={() => {handleReject(request.id)}}
+              />
             </TableCell>
           </TableRow>
         ))}
