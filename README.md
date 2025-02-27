@@ -14,7 +14,7 @@
   - Edit or remove books from the library.
 - **Users Management**: View and manage all registered users.
 - **Borrow Requests**: Handle book borrowing requests efficiently.
-- **Account Requests**: Approve or reject new user registrations. (**In Progress**)
+- **Account Requests**: Approve or reject new user registrations.
 - **Dashboard**: Quick access to all sections. (**In Progress**)
 
 ### User Panel
