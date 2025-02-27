@@ -5,6 +5,7 @@ import {
   CircleX,
   CircleAlert,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 import {
   Table,
@@ -14,20 +15,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-  DialogClose,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import ActionDialog from "@/components/admin/ActionDialog";
 
 import { formatDate } from "@/lib/utils";
 import { cn } from "@/lib/utils";
+import { toast } from "@/hooks/use-toast";
+import { approveUser, rejectUser } from "@/lib/admin/actions/user";
 
 export interface AccountRequest {
   id: string;
@@ -52,12 +45,64 @@ const requestStatusColorMap: Record<string, string> = {
 };
 
 const AccountRequestsList = ({ requests }: { requests: AccountRequest[] }) => {
-  const handleApprove = (requestId: string) => {
-    console.log(`Approving request ${requestId}`);
+  const router = useRouter();
+
+  const handleApprove = async (requestId: string) => {
+    if (!requestId) return;
+
+    try {
+      const response = await approveUser(requestId);
+
+      if (response.success) {
+        toast({
+          title: "Success",
+          description: "Account request approved successfully",
+        });
+        router.replace("/admin/account-requests");
+      } else {
+        toast({
+          title: "Error",
+          description: response.message,
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: "Error",
+        description: "An unexpected error occurred. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
-  const handleReject = (requestId: string) => {
-    console.log(`Rejecting request ${requestId}`);
+  const handleReject = async (requestId: string) => {
+    if (!requestId) return;
+
+    try {
+      const response = await rejectUser(requestId);
+
+      if (response.success) {
+        toast({
+          title: "Success",
+          description: "Account request rejected successfully",
+        });
+        router.replace("/admin/account-requests");
+      } else {
+        toast({
+          title: "Error",
+          description: response.message,
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: "Error",
+        description: "An unexpected error occurred. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -110,8 +155,10 @@ const AccountRequestsList = ({ requests }: { requests: AccountRequest[] }) => {
               </a>
             </TableCell>
             <TableCell className="flex gap-2 items-center align-middle h-auto">
-            <ActionDialog
-                triggerIcon={<CircleCheck className="h-[20px] w-[20px] text-[#027A48]" />}
+              <ActionDialog
+                triggerIcon={
+                  <CircleCheck className="h-[20px] w-[20px] text-[#027A48]" />
+                }
                 dialogIcon={
                   <CircleCheck className="h-[60px] w-[60px] p-2 rounded-full text-slate-100 mb-[20px] bg-[#4C7B62] text-center mx-auto" />
                 }
@@ -121,17 +168,23 @@ const AccountRequestsList = ({ requests }: { requests: AccountRequest[] }) => {
                 buttonClassName="bg-[#4C7B62] text-slate-200 font-bold hover:bg-[#4C7B62]/70"
                 onAction={() => handleApprove(request.id)}
               />
-              <ActionDialog
-                triggerIcon={<CircleX className="h-[20px] w-[20px] text-[#EF3A4B]" />}
-                dialogIcon={
-                  <CircleAlert className="h-[60px] w-[60px] p-2 rounded-full text-slate-100 mb-[20px] bg-[#F46F70] text-center mx-auto" />
-                }
-                title="Deny Account Request"
-                description="Denying this request will notify the student they’re not eligible due to unsuccessful ID card verification."
-                buttonText="Deny & Notify Student"
-                buttonClassName="bg-[#F46F70] text-slate-200 font-bold hover:bg-[#F46F70]/70"
-                onAction={() => {handleReject(request.id)}}
-              />
+              {request.status === "REJECTED" ? null : (
+                <ActionDialog
+                  triggerIcon={
+                    <CircleX className="h-[20px] w-[20px] text-[#EF3A4B]" />
+                  }
+                  dialogIcon={
+                    <CircleAlert className="h-[60px] w-[60px] p-2 rounded-full text-slate-100 mb-[20px] bg-[#F46F70] text-center mx-auto" />
+                  }
+                  title="Deny Account Request"
+                  description="Denying this request will notify the student they’re not eligible due to unsuccessful ID card verification."
+                  buttonText="Deny & Notify Student"
+                  buttonClassName="bg-[#F46F70] text-slate-200 font-bold hover:bg-[#F46F70]/70"
+                  onAction={() => {
+                    handleReject(request.id);
+                  }}
+                />
+              )}
             </TableCell>
           </TableRow>
         ))}

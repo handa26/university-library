@@ -12,7 +12,9 @@ type DeleteUserResult = {
 export const deleteUser = async (id: string): Promise<DeleteUserResult> => {
   try {
     // Step 1: Delete associated borrow records
-    const borrowRecordsDeleted = await db.delete(borrowRecords).where(eq(borrowRecords.userId, id));
+    const borrowRecordsDeleted = await db
+      .delete(borrowRecords)
+      .where(eq(borrowRecords.userId, id));
 
     if (!borrowRecordsDeleted) {
       console.error("Failed to delete borrow records for user:", id);
@@ -47,6 +49,66 @@ export const deleteUser = async (id: string): Promise<DeleteUserResult> => {
     return {
       success: false,
       message: error.message || "An error occurred while deleting the user",
+    };
+  }
+};
+
+export const approveUser = async (id: string) => {
+  try {
+    const approvedUser = await db
+      .update(users)
+      .set({ status: "APPROVED" })
+      .where(eq(users.id, id));
+
+    if (approvedUser.rowCount === 0) {
+      console.error("User not found:", id);
+
+      return {
+        success: false,
+        message: "User not found",
+      };
+    }
+
+    return {
+      success: true,
+      message: "User approved successfully",
+    };
+  } catch (error: any) {
+    console.error("Error approving user:", error);
+
+    return {
+      success: false,
+      message: error.message || "An error occurred while approving the user",
+    };
+  }
+};
+
+export const rejectUser = async (id: string) => {
+  try {
+    const rejectedUser = await db
+      .update(users)
+      .set({ status: "REJECTED" })
+      .where(eq(users.id, id));
+
+    if (rejectedUser.rowCount === 0) {
+      console.error("User not found:", id);
+
+      return {
+        success: false,
+        message: "User not found",
+      };
+    }
+
+    return {
+      success: true,
+      message: "User rejected successfully",
+    };
+  } catch (error: any) {
+    console.error("Error rejecting user:", error);
+
+    return {
+      success: false,
+      message: error.message || "An error occurred while rejecting the user",
     };
   }
 };

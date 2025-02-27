@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { eq, and, or } from "drizzle-orm";
 
 import AccountRequestsList from "@/components/admin/AccountRequestsList";
 
@@ -10,7 +10,7 @@ const Page = async () => {
   const accountRequests = (await db
     .select()
     .from(users)
-    .where(eq(users.status, "PENDING"))) as AccountRequest[];
+    .where(or(eq(users.status, "PENDING"), eq(users.status, "REJECTED")))) as AccountRequest[];
 
   return (
     <section className="w-full rounded-2xl bg-white p-7">
