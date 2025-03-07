@@ -36,6 +36,13 @@
       "when": 1740362831649,
       "tag": "0004_dizzy_invaders",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1741323943278,
+      "tag": "0005_jittery_franklin_storm",
+      "breakpoints": true
     }
   ]
 }

@@ -8,6 +8,7 @@ import {
   varchar,
   pgEnum,
   date,
+  boolean,
 } from "drizzle-orm/pg-core";
 
 export const STATUS_ENUM = pgEnum("status", [
@@ -21,7 +22,7 @@ export const BORROW_STATUS_ENUM = pgEnum("borrow_status", [
   "RETURNED",
   "PENDING",
   "REJECTED",
-  "LATE_RETURN"
+  "LATE_RETURN",
 ]);
 
 export const users = pgTable("users", {
@@ -66,4 +67,23 @@ export const borrowRecords = pgTable("borrow_records", {
   returnDate: date("return_date"),
   status: BORROW_STATUS_ENUM("status").default("PENDING").notNull(),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
+});
+
+export const notifications = pgTable("notifications", {
+  id: uuid("id").notNull().primaryKey().defaultRandom().unique(),
+  userId: uuid("user_id")
+    .references(() => users.id)
+    .notNull(),
+  type: text("type")
+    .$type<
+      | "verfication_accepted"
+      | "verfication_rejected"
+      | "borrow_request_accepted"
+      | "overdue_reminder"
+      | "other"
+    >()
+    .notNull(),
+  message: text("message").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
+  read: boolean('read').default(false).notNull(),
 });
