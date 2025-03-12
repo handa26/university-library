@@ -4,6 +4,7 @@ import { LogOut, Search } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import Notifications from "@/components/Notifications";
 
 import { signOut, auth } from "@/auth";
 import { getInitials } from "@/lib/utils";
@@ -19,9 +20,13 @@ const Header = async () => {
 
       <div className="flex items-center gap-5">
         <Link href="/search">
-          <span className="max-sm:hidden text-[20px] text-white font-ibm-plex-sans">Search</span>
+          <span className="max-sm:hidden text-[20px] text-white font-ibm-plex-sans">
+            Search
+          </span>
           <Search className="size-6 text-white sm:hidden" />
         </Link>
+
+        <Notifications />
 
         <Link href="/my-profile">
           <Avatar>
