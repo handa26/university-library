@@ -4,6 +4,7 @@ import dayjs from "dayjs";
 
 import { db } from "@/database/drizzle";
 import { books, borrowRecords } from "@/database/schema";
+import { createNotification } from "@/lib/actions/notification";
 
 export const borrowBook = async (params: BorrowBookParams) => {
   const { bookId, userId } = params;
@@ -50,6 +51,7 @@ export const approveBorrowRequest = async (borrowId: string) => {
         id: borrowRecords.id,
         bookId: borrowRecords.bookId,
         status: borrowRecords.status,
+        userId: borrowRecords.userId,
       })
       .from(borrowRecords)
       .where(eq(borrowRecords.id, borrowId))
@@ -63,7 +65,7 @@ export const approveBorrowRequest = async (borrowId: string) => {
     }
 
     const book = await db
-      .select({ availableCopies: books.availableCopies })
+      .select({ availableCopies: books.availableCopies, title: books.title })
       .from(books)
       .where(eq(books.id, borrowRecord[0].bookId))
       .limit(1);
@@ -91,6 +93,12 @@ export const approveBorrowRequest = async (borrowId: string) => {
       .update(books)
       .set({ availableCopies: book[0].availableCopies - 1 })
       .where(eq(books.id, borrowRecord[0].bookId));
+
+    await createNotification(
+      borrowRecord[0].userId,
+      `Your borrow request for "${book[0].title}" has been accepted.`,
+      "borrow_request_accepted"
+    );
 
     return {
       success: true,
