@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { LogOut, Search } from "lucide-react";
+import { eq } from "drizzle-orm";
 
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -8,9 +9,17 @@ import Notifications from "@/components/Notifications";
 
 import { signOut, auth } from "@/auth";
 import { getInitials } from "@/lib/utils";
+import { db } from "@/database/drizzle";
+import { notifications } from "@/database/schema";
 
 const Header = async () => {
   const session = await auth();
+
+  const getNotif = await db
+    .select()
+    .from(notifications)
+    .where(eq(notifications.userId, session?.user?.id as string))
+    .limit(10);
 
   return (
     <header className="my-10 flex items-center justify-between gap-5">
@@ -26,7 +35,7 @@ const Header = async () => {
           <Search className="size-6 text-white sm:hidden" />
         </Link>
 
-        <Notifications />
+        <Notifications notifications={getNotif} />
 
         <Link href="/my-profile">
           <Avatar>
