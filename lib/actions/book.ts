@@ -116,7 +116,11 @@ export const approveBorrowRequest = async (borrowId: string) => {
 export const rejectBorrowRequest = async (borrowId: string) => {
   try {
     const borrowRecord = await db
-      .select({ id: borrowRecords.id, status: borrowRecords.status })
+      .select({
+        id: borrowRecords.id,
+        status: borrowRecords.status,
+        userId: borrowRecords.userId,
+      })
       .from(borrowRecords)
       .where(eq(borrowRecords.id, borrowId))
       .limit(1);
@@ -132,6 +136,18 @@ export const rejectBorrowRequest = async (borrowId: string) => {
       .update(borrowRecords)
       .set({ status: "REJECTED" })
       .where(eq(borrowRecords.id, borrowId));
+
+    const book = await db
+      .select({ title: books.title })
+      .from(books)
+      .where(eq(books.id, borrowRecord[0].id))
+      .limit(1);
+
+    await createNotification(
+      borrowRecord[0].userId,
+      `Your borrow request for "${book[0].title}" has been rejected.`,
+      "borrow_request_rejected"
+    );
 
     return {
       success: true,
