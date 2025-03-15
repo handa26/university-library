@@ -3,6 +3,7 @@ import { eq, sql } from "drizzle-orm";
 
 import { db } from "@/database/drizzle";
 import { users, borrowRecords } from "@/database/schema";
+import { createNotification } from "@/lib/actions/notification";
 
 type DeleteUserResult = {
   success: boolean;
@@ -69,6 +70,12 @@ export const approveUser = async (id: string) => {
       };
     }
 
+    await createNotification(
+      id,
+      "Your account has been approved by the admin",
+      "verfication_accepted"
+    );
+
     return {
       success: true,
       message: "User approved successfully",
@@ -98,6 +105,12 @@ export const rejectUser = async (id: string) => {
         message: "User not found",
       };
     }
+
+    await createNotification(
+      id,
+      "Your account has been rejected by the admin",
+      "verfication_rejected"
+    );
 
     return {
       success: true,
