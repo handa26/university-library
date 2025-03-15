@@ -28,9 +28,9 @@
   - List all books
   - Books with detailed information.
   - Search for books by title
+  - Notification
   - Pagination for books (**Soon**)
   - Search for books by author, genre (**Soon**)
-  - Notification (**Soon**)
 
 ---
 
