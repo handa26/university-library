@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { LogOut, Search } from "lucide-react";
-import { eq } from "drizzle-orm";
+import { eq, desc } from "drizzle-orm";
 
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -19,6 +19,7 @@ const Header = async () => {
     .select()
     .from(notifications)
     .where(eq(notifications.userId, session?.user?.id as string))
+    .orderBy(desc(notifications.createdAt))
     .limit(10);
 
   return (
