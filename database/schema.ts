@@ -79,6 +79,7 @@ export const notifications = pgTable("notifications", {
       | "verfication_accepted"
       | "verfication_rejected"
       | "borrow_request_accepted"
+      | "borrow_request_rejected"
       | "overdue_reminder"
       | "other"
     >()
