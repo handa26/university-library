@@ -66,10 +66,10 @@ const Notifications = ({ notifications }: { notifications: Props[] }) => {
                     "hover:bg-slate-200 hover:bg-opacity-10 transition-all duration-300",
                     notification.read ? "bg-slate-800" : "bg-slate-900"
                   )}
+                  key={notification.id}
                 >
                   <Link
                     href={notifTypeUrlMap[notification.type]}
-                    key={notification.id}
                     className="font-ibm-plex-sans text-[14px] inline-block mb-2 p-2"
                   >
                     <h4 className="font-bold text-white">
