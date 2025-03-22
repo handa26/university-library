@@ -1,5 +1,5 @@
 "use server";
-import { eq } from "drizzle-orm";
+import { eq, desc } from "drizzle-orm";
 
 import { db } from "@/database/drizzle";
 import { books, borrowRecords } from "@/database/schema";
@@ -77,5 +77,20 @@ export const deleteBook = async (bookId: string) => {
       success: false,
       message: error.message || "An error occurred while deleting the book",
     };
+  }
+};
+
+export const getRecentlyAddedBooks = async (limit: number) => {
+  try {
+    const recentAddedBooks = await db
+      .select()
+      .from(books)
+      .orderBy(desc(books.createdAt))
+      .limit(limit);
+
+    return recentAddedBooks;
+  } catch (error) {
+    console.log(error);
+    return [];
   }
 };

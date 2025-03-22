@@ -1,9 +1,9 @@
 "use server";
-import { eq } from "drizzle-orm";
+import { eq, desc } from "drizzle-orm";
 import dayjs from "dayjs";
 
 import { db } from "@/database/drizzle";
-import { books, borrowRecords } from "@/database/schema";
+import { books, borrowRecords, users } from "@/database/schema";
 import { createNotification } from "@/lib/actions/notification";
 
 export const borrowBook = async (params: BorrowBookParams) => {
@@ -214,5 +214,37 @@ export const returnBook = async (borrowId: string) => {
       success: false,
       error: "An error occurred while returning the book",
     };
+  }
+};
+
+export const getRecentBorrowRequest = async (limit: number) => {
+  try {
+    const recentBorrowRequests = await db
+      .select()
+      .from(borrowRecords)
+      .leftJoin(books, eq(borrowRecords.bookId, books.id))
+      .leftJoin(users, eq(borrowRecords.userId, users.id))
+      .where(eq(borrowRecords.status, "BORROWED"))
+      .orderBy(desc(borrowRecords.createdAt))
+      .limit(limit);
+
+    return recentBorrowRequests;
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+};
+
+export const getTotalBorrowedBooks = async () => {
+  try {  
+    const totalBorrowedBooks = await db
+      .select()
+      .from(borrowRecords)
+      .where(eq(borrowRecords.status, "BORROWED"));
+
+    return totalBorrowedBooks.length
+  } catch (error) {
+    console.log(error);
+    return [];
   }
 };

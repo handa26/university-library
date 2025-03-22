@@ -125,3 +125,18 @@ export const rejectUser = async (id: string) => {
     };
   }
 };
+
+export const getAccountRequests = async (limit: number) => {
+  try {
+    const accountRequests = await db
+      .select()
+      .from(users)
+      .where(eq(users.status, "PENDING"))
+      .limit(limit);
+
+    return accountRequests;
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+};
