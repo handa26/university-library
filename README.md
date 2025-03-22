@@ -15,7 +15,7 @@
 - **Users Management**: View and manage all registered users.
 - **Borrow Requests**: Handle book borrowing requests efficiently.
 - **Account Requests**: Approve or reject new user registrations.
-- **Dashboard**: Quick access to all sections. (**In Progress**)
+- **Dashboard**: Quick access to all sections.
 
 ### User Panel
 
@@ -157,13 +157,13 @@
 
 <div style="margin-top: 12px; margin-bottom: 12px">
   <a href="https://university-library-nu.vercel.app/">
-    <img src="./public/preview/BookWise-admin.png" alt="admin" style="width: 100%; border: 2px solid blue; border-radius: 10px;">
+    <img src="./public/preview/BookWise-register.png" alt="register" style="width: 100%; border: 2px solid blue; border-radius: 10px;">
   </a>
 </div>
 
 <div style="margin-top: 12px; margin-bottom: 12px">
   <a href="https://university-library-nu.vercel.app/">
-    <img src="./public/preview/BookWise-register.png" alt="register" style="width: 100%; border: 2px solid blue; border-radius: 10px;">
+    <img src="./public/preview/BookWise-dashboard.png" alt="admin-userlist" style="width: 100%; border: 2px solid blue; border-radius: 10px;">
   </a>
 </div>
 
