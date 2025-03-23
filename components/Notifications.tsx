@@ -14,6 +14,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 
 import { cn } from "@/lib/utils";
+import { markNotificationAsRead } from "@/lib/actions/notification";
 
 const notifTypeStatusMap: Record<string, string> = {
   verfication_accepted: "Verification Accepted",
@@ -39,15 +40,13 @@ interface Props {
 }
 
 const Notifications = ({ notifications }: { notifications: Props[] }) => {
+  const unreadNotifications = notifications.filter((n) => !n.read);
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="relative">
         <span className="absolute -top-2 -right-2 bg-[#FF5969] text-white text-xs font-ibm-plex-sans font-bold px-1 rounded-full">
-          {notifications.length > 9
-            ? "9+"
-            : notifications.length === 0
-            ? ""
-            : notifications.length}
+          {unreadNotifications.length === 0 ? "" : unreadNotifications.length}
         </span>
         <Bell className="size-6 text-white" />
       </DropdownMenuTrigger>
@@ -71,6 +70,11 @@ const Notifications = ({ notifications }: { notifications: Props[] }) => {
                   <Link
                     href={notifTypeUrlMap[notification.type]}
                     className="font-ibm-plex-sans text-[14px] inline-block mb-2 p-2"
+                    onClick={() => {
+                      if (!notification.read) {
+                        markNotificationAsRead(notification.id);
+                      }
+                    }}
                   >
                     <h4 className="font-bold text-white">
                       {notifTypeStatusMap[notification.type]}

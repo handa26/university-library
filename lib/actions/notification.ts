@@ -34,3 +34,23 @@ export const createNotification = async (
     };
   }
 };
+
+export const markNotificationAsRead = async (notificationId: string) => {
+  try {
+    await db
+      .update(notifications)
+      .set({ read: true })
+      .where(eq(notifications.id, notificationId));
+
+    return {
+      success: true,
+      message: "Notification marked as read",
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      success: false,
+      error: "An error occurred while marking the notification as read",
+    };
+  }
+};
