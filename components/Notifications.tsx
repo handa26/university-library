@@ -1,6 +1,7 @@
 "use client";
 import { Bell } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import {
   DropdownMenu,
@@ -14,7 +15,10 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 
 import { cn } from "@/lib/utils";
-import { markNotificationAsRead } from "@/lib/actions/notification";
+import {
+  markNotificationAsRead,
+  markAllNotificationsAsRead,
+} from "@/lib/actions/notification";
 
 const notifTypeStatusMap: Record<string, string> = {
   verfication_accepted: "Verification Accepted",
@@ -40,7 +44,10 @@ interface Props {
 }
 
 const Notifications = ({ notifications }: { notifications: Props[] }) => {
+  const router = useRouter();
   const unreadNotifications = notifications.filter((n) => !n.read);
+
+  const unreadNotificationIds = unreadNotifications.map((n) => n.id);
 
   return (
     <DropdownMenu>
@@ -53,7 +60,15 @@ const Notifications = ({ notifications }: { notifications: Props[] }) => {
       <DropdownMenuContent className="w-[346px] bg-slate-900 border-slate-800 text-slate-200 lg:mr-[310px] p-0">
         <ScrollArea className="h-72 w-auto mr-auto">
           <div className="p-2 flex justify-end">
-            <p className="text-slate-400 font-ibm-plex-sans cursor-pointer">
+            <p
+              className="text-slate-400 font-ibm-plex-sans cursor-pointer"
+              onClick={() => {
+                if (unreadNotificationIds.length > 0) {
+                  markAllNotificationsAsRead(unreadNotificationIds);
+                  router.refresh();
+                }
+              }}
+            >
               Mark all as read
             </p>
           </div>

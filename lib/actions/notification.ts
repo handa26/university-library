@@ -54,3 +54,25 @@ export const markNotificationAsRead = async (notificationId: string) => {
     };
   }
 };
+
+export const markAllNotificationsAsRead = async (notifIds: any) => {
+  try {
+    notifIds.forEach(async (id: any) => {
+      await db
+        .update(notifications)
+        .set({ read: true })
+        .where(eq(notifications.id, id));        
+    });
+
+    return {
+      success: true,
+      message: "All notifications marked as read",
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      success: false,
+      error: "An error occurred while marking all notifications as read",
+    };
+  }
+};
