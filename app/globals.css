@@ -230,7 +230,7 @@
 
   /* Profile */
   .profile_container {
-    @apply w-full pb-10 px-6 max-w-7xl mx-auto lg:flex-row flex-col flex gap-10;
+    @apply w-full pb-10 max-w-7xl mx-auto lg:flex-row flex-col flex gap-10 md:px-6;
   }
 
   .profile_card {
@@ -238,7 +238,7 @@
   }
 
   .profile_card-pin {
-    @apply w-[59px] h-[88px] absolute top-[-15px] left-[45%] bg-[#464F6F] flex flex-col justify-end items-center pb-[15px] rounded-br-full rounded-bl-full;
+    @apply w-[59px] h-[88px] hidden absolute top-[-15px] left-[45%] bg-[#464F6F] flex-col justify-end items-center pb-[15px] rounded-br-full rounded-bl-full md:flex;
   }
 
   .profile_card-pin div {

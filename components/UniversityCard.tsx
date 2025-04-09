@@ -12,7 +12,7 @@ const UniversityCard = ({ universityCard }: { universityCard: string }) => {
         alt="university card"
         width={0}
         height={0}
-        className="rounded-sm object-fill w-full h-[287px]"
+        className="rounded-sm object-fill w-full h-[200px] md:h-[287px]"
         loading="lazy"
         lqip={{ active: true }}
       />
